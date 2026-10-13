@@ -11,11 +11,11 @@ import java.util.HashMap;
 
 public class NetheriteMobs {
     public static final HashMap<EntityType<?>, Identifier> MOBS_TO_MODIFY = new HashMap<>(){{
-        put(EntityType.SLIME, new Identifier(Main.MOD_ID, "day25/gigaslime"));
-        put(EntityType.MAGMA_CUBE, new Identifier(Main.MOD_ID, "day25/gigamagmacube"));
-        put(EntityType.GHAST, new Identifier(Main.MOD_ID, "day25/ghastdemon"));
-        put(EntityType.CAVE_SPIDER, new Identifier(Main.MOD_ID, "day25/netheritecavespider"));
-        put(EntityType.RAVAGER, new Identifier(Main.MOD_ID, "day25/ravager"));
+        put(EntityType.SLIME, Identifier.of(Main.MOD_ID, "day25/gigaslime"));
+        put(EntityType.MAGMA_CUBE, Identifier.of(Main.MOD_ID, "day25/gigamagmacube"));
+        put(EntityType.GHAST, Identifier.of(Main.MOD_ID, "day25/ghastdemon"));
+        put(EntityType.CAVE_SPIDER, Identifier.of(Main.MOD_ID, "day25/netheritecavespider"));
+        put(EntityType.RAVAGER, Identifier.of(Main.MOD_ID, "day25/ravager"));
     }};
 
     public static void register (CallbackInfoReturnable<Identifier> cir, MobEntity entity) {

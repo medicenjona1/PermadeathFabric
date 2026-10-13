@@ -27,7 +27,9 @@ public class DeathHandler {
         SkullBlockEntity skull = (SkullBlockEntity) world.getBlockEntity(player.getBlockPos().up());
         assert skull != null;
 
-        skull.setOwner(player.getGameProfile());
+        skull.setOwner(
+        new net.minecraft.component.type.ProfileComponent(player.getGameProfile())
+            );
         skull.markDirty();
     }
 
@@ -54,7 +56,11 @@ public class DeathHandler {
         Text subtitle = createText(String.format("%s ha muerto.", playerName), Formatting.WHITE, false);
 
         server.getPlayerManager().getPlayerList().forEach(p -> {
-            p.playSound(SoundEvents.ENTITY_BLAZE_DEATH, SoundCategory.AMBIENT, Float.MAX_VALUE, -0.1f);
+            p.playSound(
+                SoundEvents.ENTITY_BLAZE_DEATH,
+                Float.MAX_VALUE,
+                -0.1f
+            );
             p.networkHandler.sendPacket(new TitleS2CPacket(title));
             p.networkHandler.sendPacket(new SubtitleS2CPacket(subtitle));
         });

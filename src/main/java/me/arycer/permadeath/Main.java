@@ -21,7 +21,7 @@ public class Main implements DedicatedServerModInitializer {
     public void onInitializeServer() {
         ServerUtil.cacheServer();
 
-        LOGGER.info("Permadeath está cargando. Idea original de ElRichMC, port a Fabric por Arycer.");
+        LOGGER.info("Permadeath está cargando. Idea original de ElRichMC, port a Fabric por Arycer, actualizado a 1.21.1 por medicenjona1");
         config.load();
 
         NetherModifications.register();

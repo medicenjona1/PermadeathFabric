@@ -9,11 +9,12 @@ import net.minecraft.entity.mob.CaveSpiderEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 
 import java.util.HashMap;
 
 public class CustomSpider {
-    private static final HashMap<StatusEffect, Integer> EFFECT_LIST = new HashMap<>(){{
+    private static final HashMap<RegistryEntry<StatusEffect>, Integer> EFFECT_LIST = new HashMap<RegistryEntry<StatusEffect>, Integer>() {{
         put(StatusEffects.SPEED, 3);
         put(StatusEffects.STRENGTH, 4);
         put(StatusEffects.JUMP_BOOST, 5);
@@ -31,11 +32,11 @@ public class CustomSpider {
         if (spider.hasPassengers()) spider.getPassengerList().forEach(p -> p.remove(Entity.RemovalReason.DISCARDED));
 
         switch (spider.getRandom().nextInt(5) + 1) {
-            case 1 -> CustomSkeletons.chainWitherSkeleton(new WitherSkeletonEntity(EntityType.WITHER_SKELETON, spider.world)).startRiding(spider);
-            case 2 -> CustomSkeletons.diamondSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.world)).startRiding(spider);
-            case 3 -> CustomSkeletons.ironSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.world)).startRiding(spider);
-            case 4 -> CustomSkeletons.goldSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.world)).startRiding(spider);
-            case 5 -> CustomSkeletons.leatherWitherSkeleton(new WitherSkeletonEntity(EntityType.WITHER_SKELETON, spider.world)).startRiding(spider);
+            case 1 -> CustomSkeletons.chainWitherSkeleton(new WitherSkeletonEntity(EntityType.WITHER_SKELETON, spider.getWorld())).startRiding(spider);
+            case 2 -> CustomSkeletons.diamondSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.getWorld())).startRiding(spider);
+            case 3 -> CustomSkeletons.ironSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.getWorld())).startRiding(spider);
+            case 4 -> CustomSkeletons.goldSkeleton(new SkeletonEntity(EntityType.SKELETON, spider.getWorld())).startRiding(spider);
+            case 5 -> CustomSkeletons.leatherWitherSkeleton(new WitherSkeletonEntity(EntityType.WITHER_SKELETON, spider.getWorld())).startRiding(spider);
         }
     }
 }

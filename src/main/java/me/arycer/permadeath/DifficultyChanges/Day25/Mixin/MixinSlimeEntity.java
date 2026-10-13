@@ -25,12 +25,12 @@ public abstract class MixinSlimeEntity extends MobEntity {
 
     @Override
     @Nullable
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
         int day = ModConfig.getServerDay();
         if (day >= 25) {
             setSize(15, true);
             EntityUtils.setMaxHealth(this, this.getMaxHealth() * 2, true);
         }
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 }

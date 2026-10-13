@@ -16,16 +16,30 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(PhantomEntity.class)
 public abstract class MixinPhantomEntity extends FlyingEntity {
-    @Shadow public abstract void setPhantomSize(int size);
+    @Shadow 
+    public abstract void setPhantomSize(int size);
 
-    protected MixinPhantomEntity(EntityType<? extends FlyingEntity> entityType, World world) {
+    protected MixinPhantomEntity(
+        EntityType<? extends FlyingEntity> entityType,
+         World world) {
         super(entityType, world);
-    }
+         }
+
 
     @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+    public EntityData initialize(
+        ServerWorldAccess world, 
+        LocalDifficulty difficulty,
+         SpawnReason spawnReason, 
+         @Nullable EntityData entityData
+        ) {
         int day = ModConfig.getServerDay();
         if (day >= 20) setPhantomSize(9);
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+        return super.initialize(
+            world,
+             difficulty,
+              spawnReason,
+               entityData
+            );
     }
 }

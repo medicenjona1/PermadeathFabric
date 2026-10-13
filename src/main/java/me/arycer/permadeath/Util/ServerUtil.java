@@ -77,6 +77,6 @@ public class ServerUtil {
     }
 
     public static boolean isInDimension(Entity entity, Identifier dimension) {
-        return entity.world.getDimensionEntry().matchesId(dimension);
+        return entity.getWorld().getDimensionEntry().matchesId(dimension);
     }
 }

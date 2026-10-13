@@ -1,12 +1,31 @@
 package me.arycer.permadeath.Util;
 
+import dev.isxander.yacl3.config.ConfigEntry;
+import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
+import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import dev.isxander.yacl3.config.v2.impl.serializer.GsonConfigSerializer;
 import me.arycer.permadeath.Main;
-import me.lortseam.completeconfig.api.ConfigEntry;
-import me.lortseam.completeconfig.data.Config;
-import me.lortseam.completeconfig.data.ConfigOptions;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
-public class ModConfig extends Config {
-    public ModConfig() {
+
+public class ModConfig {
+    public static final ConfigClassHandler<ModConfig> HANDLER =
+            ConfigClassHandler.createBuilder(ModConfig.class)
+                    .id(Identifier.of("permadeath", "config"))
+                    .serializer(config ->
+                            GsonConfigSerializerBuilder.create(config)
+                                    .setPath(FabricLoader.getInstance()
+                                            .getConfigDir()
+                                            .resolve("permadeath.json5"))
+                                    .setJson5(true)
+                                    .build())
+                    .build();
+        
+  
+  
+    /* public ModConfig() {
         super(ConfigOptions
                 .mod(Main.MOD_ID)
                 .fileHeader("Permadeath Config")
@@ -16,43 +35,55 @@ public class ModConfig extends Config {
     public static void reload () {
         Main.config.save();
         Main.config.load();
+    } */ 
+    public static ModConfig get() {
+        return HANDLER.instance();
     }
 
-    @ConfigEntry
-    private static long CREATION_TIME = System.currentTimeMillis();
+    @SerialEntry 
+    public long CREATION_TIME = System.currentTimeMillis();
 
-    @ConfigEntry
-    private static boolean BAN_ON_DEATH = true;
+    @SerialEntry 
+    public boolean BAN_ON_DEATH = true;
 
-    @ConfigEntry
-    private static boolean OP_BAN_IMMUNITY = true;
+    @SerialEntry 
+    public boolean OP_BAN_IMMUNITY = true;
+
+    public static void load() {
+        HANDLER.load();
+    }
+
+    public static void save() {
+        HANDLER.save();
+    }
+
 
     public static int getServerDay() {
-        long epoch = System.currentTimeMillis() - CREATION_TIME;
+        long epoch = System.currentTimeMillis() - get().CREATION_TIME;
         int day = (int) (epoch / 86400000);
         return day + 1;
     }
 
     public static boolean getBanOnDeath () {
-        return BAN_ON_DEATH;
+        return get().BAN_ON_DEATH;
     }
 
     public static boolean getOpBanImmunity () {
-        return OP_BAN_IMMUNITY;
+        return get().OP_BAN_IMMUNITY;
     }
 
     public static void setServerDay (int day) {
-        CREATION_TIME = System.currentTimeMillis() - ((long) (day - 1) * 24 * 60 * 60 * 1000);
-        reload();
+        get().CREATION_TIME = System.currentTimeMillis() - ((long) (day - 1) * 24 * 60 * 60 * 1000);
+        save();
     }
 
     public static void setBanOnDeath (boolean ban) {
-        BAN_ON_DEATH = ban;
-        reload();
+        get().BAN_ON_DEATH = ban;
+        save();
     }
 
     public static void setOpBanImmunity (boolean opImmunity) {
-        OP_BAN_IMMUNITY = opImmunity;
-        reload();
+        get().OP_BAN_IMMUNITY = opImmunity;
+        save();
     }
 }

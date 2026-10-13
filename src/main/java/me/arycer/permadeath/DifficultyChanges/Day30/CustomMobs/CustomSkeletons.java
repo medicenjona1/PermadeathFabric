@@ -2,6 +2,7 @@ package me.arycer.permadeath.DifficultyChanges.Day30.CustomMobs;
 
 import me.arycer.permadeath.Util.EntityUtils;
 import me.arycer.permadeath.Util.NbtUtils;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -10,8 +11,11 @@ import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 
 import java.awt.*;
+import java.util.Map;
 
 public class CustomSkeletons {
     public static void chainWitherSkeleton (WitherSkeletonEntity skeleton) {
@@ -20,9 +24,16 @@ public class CustomSkeletons {
         skeleton.equipStack(EquipmentSlot.LEGS, NbtUtils.makeUnbreakable(new ItemStack(Items.CHAINMAIL_LEGGINGS)));
         skeleton.equipStack(EquipmentSlot.FEET, NbtUtils.makeUnbreakable(new ItemStack(Items.CHAINMAIL_BOOTS)));
 
+
+
+
+
         ItemStack bow = new ItemStack(Items.BOW);
-        bow.addEnchantment(Enchantments.PUNCH, 30);
-        bow.addEnchantment(Enchantments.POWER, 25);
+        NbtUtils.enchantItem(bow, skeleton, Map.of(
+                Enchantments.POWER, 25,
+                Enchantments.PUNCH, 30
+                
+        ));
         skeleton.equipStack(EquipmentSlot.MAINHAND, NbtUtils.makeUnbreakable(bow));
 
         EntityUtils.setMaxHealth(skeleton, skeleton.getMaxHealth() * 2, true);
@@ -30,10 +41,30 @@ public class CustomSkeletons {
     }
 
     public static void diamondSkeleton (SkeletonEntity skeleton) {
-        ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET); helmet.addEnchantment(Enchantments.PROTECTION, 4);
-        ItemStack chestplate = new ItemStack(Items.DIAMOND_CHESTPLATE); chestplate.addEnchantment(Enchantments.PROTECTION, 4);
-        ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS); leggings.addEnchantment(Enchantments.PROTECTION, 4);
-        ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS); boots.addEnchantment(Enchantments.PROTECTION, 4);
+        ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET); 
+        NbtUtils.enchantItem(helmet, skeleton, Map.of(
+            Enchantments.PROTECTION, 4
+        ));
+        //helmet.addEnchantment(Enchantments.PROTECTION, 4);
+        ItemStack chestplate = new ItemStack(Items.DIAMOND_CHESTPLATE);     
+        NbtUtils.enchantItem(chestplate, skeleton, Map.of(
+            Enchantments.PROTECTION, 4
+
+        ));
+
+        //chestplate.addEnchantment(Enchantments.PROTECTION, 4);
+        ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS); 
+        NbtUtils.enchantItem(leggings, skeleton, Map.of(
+            Enchantments.PROTECTION, 4
+        ));
+
+        //leggings.addEnchantment(Enchantments.PROTECTION, 4);
+        ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS); 
+        NbtUtils.enchantItem(boots, skeleton, Map.of(
+            Enchantments.PROTECTION, 4
+        ));
+        
+        //boots.addEnchantment(Enchantments.PROTECTION, 4);
 
         skeleton.equipStack(EquipmentSlot.HEAD, NbtUtils.makeUnbreakable(helmet));
         skeleton.equipStack(EquipmentSlot.CHEST, NbtUtils.makeUnbreakable(chestplate));
@@ -54,7 +85,9 @@ public class CustomSkeletons {
         skeleton.equipStack(EquipmentSlot.FEET, NbtUtils.makeUnbreakable(new ItemStack(Items.GOLDEN_BOOTS)));
 
         ItemStack crossbow = new ItemStack(Items.CROSSBOW);
-        crossbow.addEnchantment(Enchantments.SHARPNESS, 25);
+        NbtUtils.enchantItem(crossbow, skeleton, Map.of(
+             Enchantments.SHARPNESS, 25
+        ));
         skeleton.equipStack(EquipmentSlot.MAINHAND, NbtUtils.makeUnbreakable(crossbow));
 
         skeleton.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, -1, 2));
@@ -70,7 +103,10 @@ public class CustomSkeletons {
         skeleton.equipStack(EquipmentSlot.FEET, NbtUtils.makeUnbreakable(new ItemStack(Items.IRON_BOOTS)));
 
         ItemStack axe = new ItemStack(Items.IRON_AXE);
-        axe.addEnchantment(Enchantments.FIRE_ASPECT, 10);
+        NbtUtils.enchantItem(axe, skeleton, Map.of(
+            Enchantments.FIRE_ASPECT, 10
+        ));
+        //axe.addEnchantment(Enchantments.FIRE_ASPECT, 10);
         skeleton.equipStack(EquipmentSlot.MAINHAND, NbtUtils.makeUnbreakable(axe));
 
         EntityUtils.setMaxHealth(skeleton, skeleton.getMaxHealth() * 2, true);
@@ -84,7 +120,10 @@ public class CustomSkeletons {
         skeleton.equipStack(EquipmentSlot.FEET, NbtUtils.makeUnbreakable(NbtUtils.dyeArmor(new ItemStack(Items.LEATHER_BOOTS), Color.RED.getRGB())));
 
         ItemStack bow = new ItemStack(Items.BOW);
-        bow.addEnchantment(Enchantments.POWER, 50);
+        NbtUtils.enchantItem(bow, skeleton, Map.of(
+            Enchantments.POWER, 50
+        ));
+        //bow.addEnchantment(Enchantments.POWER, 50);
         skeleton.equipStack(EquipmentSlot.MAINHAND, NbtUtils.makeUnbreakable(bow));
 
         EntityUtils.setMaxHealth(skeleton, skeleton.getMaxHealth() * 2, true);

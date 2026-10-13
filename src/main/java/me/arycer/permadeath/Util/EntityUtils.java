@@ -7,7 +7,9 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,16 +28,16 @@ public class EntityUtils {
         return mob;
     }
 
-    public static <T extends MobEntity> void addListEffects(T mob, HashMap<StatusEffect, Integer> effectList, int minEffects, int maxEffects) {
-        List<StatusEffect> effects = new ArrayList<>();
+    public static <T extends MobEntity> void addListEffects(T mob, HashMap<RegistryEntry<StatusEffect>, Integer> effectList, int minEffects, int maxEffects) {
+        List<RegistryEntry<StatusEffect>> avalaibleEffects = new ArrayList<>(effectList.keySet());
         int numEffects = mob.getRandom().nextInt(maxEffects - minEffects + 1) + minEffects;
+        int max = Math.min(maxEffects, avalaibleEffects.size());
+        int min = Math.min(minEffects, max);
 
         for (int i = 0; i < numEffects; i++) {
-            StatusEffect effect;
-            do {
-                effect = Iterables.get(effectList.keySet(), mob.getRandom().nextInt(effectList.size()));
-            } while (effects.contains(effect));
-            effects.add(effect);
+            int index = mob.getRandom().nextInt(avalaibleEffects.size());
+
+            RegistryEntry<StatusEffect> effect = avalaibleEffects.remove(index);
 
             int duration = -1;
             int amplifier = effectList.get(effect);

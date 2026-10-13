@@ -30,8 +30,8 @@ public class SetOpBanImmunity {
         ModConfig.setOpBanImmunity(enabled);
 
         Text msg = createText(String.format("La inmunidad de los operadores al ban está %s.", enabled ? "activada" : "desactivada"), Formatting.GRAY, false);
-        source.sendFeedback(msg, true);
-
+        //source.sendFeedback(msg, true);
+        source.sendFeedback(() -> msg, false);
         return 1;
     }
 }

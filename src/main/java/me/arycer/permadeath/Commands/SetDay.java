@@ -30,8 +30,8 @@ public class SetDay {
         ModConfig.setServerDay(day);
 
         Text msg = createText(String.format("Se ha establecido el día actual a %d.", day), Formatting.GRAY, false);
-        source.sendFeedback(msg, true);
-
+        //source.sendFeedback(msg, true);
+        source.sendFeedback(() -> msg, false);
         return 1;
     }
 }

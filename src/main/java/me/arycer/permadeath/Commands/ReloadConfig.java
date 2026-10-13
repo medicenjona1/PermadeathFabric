@@ -24,7 +24,8 @@ public class ReloadConfig {
         ServerCommandSource source = ctx.getSource();
 
         Text msg = createText("Configuración recargada.", Formatting.GRAY, false);
-        source.sendFeedback(msg, true);
+        source.sendFeedback(() -> msg, false);
+        //source.sendFeedback(msg, true);
 
         return 1;
     }

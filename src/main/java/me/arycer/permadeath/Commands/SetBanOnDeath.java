@@ -30,8 +30,8 @@ public class SetBanOnDeath {
         ModConfig.setBanOnDeath(enabled);
 
         Text msg = createText(String.format("El ban al morir está %s.", enabled ? "activado" : "desactivado"), Formatting.GRAY, false);
-        source.sendFeedback(msg, true);
-
+        //source.sendFeedback(msg, true);
+        source.sendFeedback(() -> msg, false);
         return 1;
     }
 }

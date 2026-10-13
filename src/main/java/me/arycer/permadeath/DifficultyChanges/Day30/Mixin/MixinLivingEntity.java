@@ -6,6 +6,8 @@ import me.arycer.permadeath.Main;
 import me.arycer.permadeath.Util.EntityUtils;
 import me.arycer.permadeath.Util.ModConfig;
 import me.arycer.permadeath.Util.NbtUtils;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
@@ -18,6 +20,8 @@ import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.Potions;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -32,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static me.arycer.permadeath.Util.ServerUtil.addHoverText;
 import static me.arycer.permadeath.Util.ServerUtil.createText;
@@ -103,8 +108,13 @@ public class MixinLivingEntity {
         } else if (entity instanceof SkeletonEntity skeleton && !entity.hasVehicle() && !skeleton.hasCustomName()) {
             int random = entity.getRandom().nextInt(5) + 1;
 
-            ItemStack arrow = new ItemStack(Items.TIPPED_ARROW);
-            arrow.getOrCreateNbt().putString("Potion", "minecraft:strong_harming");
+
+    ItemStack arrow = new ItemStack(Items.TIPPED_ARROW);
+
+        arrow.set(
+        DataComponentTypes.POTION_CONTENTS,
+        new PotionContentsComponent(Potions.STRONG_HARMING)
+        );
 
             if (random <= 3) {
                 switch (random) {
@@ -137,7 +147,10 @@ public class MixinLivingEntity {
             creeper.readCustomDataFromNbt(tag);
         } else if (entity instanceof PillagerEntity pillager) {
             ItemStack crossbow = new ItemStack(Items.CROSSBOW);
-            crossbow.addEnchantment(Enchantments.QUICK_CHARGE, 5);
+            NbtUtils.enchantItem(crossbow, entity, Map.of(
+                Enchantments.QUICK_CHARGE, 5
+            ));
+            //crossbow.addEnchantment(Enchantments.QUICK_CHARGE, 5);
             pillager.equipStack(EquipmentSlot.MAINHAND, crossbow);
             pillager.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, -1));
         } else if (entity instanceof ZombifiedPiglinEntity piglin) {
@@ -151,7 +164,7 @@ public class MixinLivingEntity {
         } else if (entity instanceof EndermanEntity enderman) {
             enderman.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, 2));
         } else if (entity instanceof SilverfishEntity silverfish) {
-            final HashMap<StatusEffect, Integer> EFFECT_LIST = new HashMap<>(){{
+            final HashMap<RegistryEntry<StatusEffect>, Integer> EFFECT_LIST = new HashMap<>(){{
                 put(StatusEffects.SPEED, 3);
                 put(StatusEffects.STRENGTH, 4);
                 put(StatusEffects.JUMP_BOOST, 5);

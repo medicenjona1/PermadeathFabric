@@ -4,6 +4,7 @@ import me.arycer.permadeath.Util.ModConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -12,7 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
+import me.arycer.permadeath.DifficultyChanges.Day20.DirectMeleeAttackGoal;
 import java.util.Objects;
 
 @Mixin({AllayEntity.class, AnimalEntity.class, DolphinEntity.class, FishEntity.class, ParrotEntity.class, SnowGolemEntity.class, SquidEntity.class, VillagerEntity.class, WanderingTraderEntity.class, TameableEntity.class})
@@ -44,15 +45,32 @@ public abstract class PassiveEntitiesAggressive extends PathAwareEntity {
             this.goalSelector.getGoals().removeIf((it) -> it.getGoal() instanceof FleeEntityGoal<?>);
         }
 
-        if (isAggressive) return;
 
-        this.goalSelector.add(0, new MeleeAttackGoal(this, 1.0D, true));
-        this.targetSelector.add(0, new RevengeGoal(this).setGroupRevenge());
-        this.targetSelector.add(0, new ActiveTargetGoal(this, PlayerEntity.class, true, true));
-        this.targetSelector.add(0, new UniversalAngerGoal(this, true));
+    
+    if (isAggressive) return;
 
-        AttributeContainer container = this.getAttributes();
-        ((AttributeContainerAccessor) container).getCustom().putIfAbsent(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (it) -> {}));
-        Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE)).setBaseValue(8.0D);
+    this.goalSelector.add(
+            0,
+            new DirectMeleeAttackGoal(this, 1.0D)
+    );
+
+    this.targetSelector.add(
+            0,
+            new RevengeGoal(this).setGroupRevenge()
+    );
+
+    this.targetSelector.add(
+            1,
+            new ActiveTargetGoal<>(
+                    this,
+                    PlayerEntity.class,
+                    true,
+                    true
+            )
+    );
+
+    isAggressive = true;
+
+
     }
 }
